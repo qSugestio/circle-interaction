@@ -1,0 +1,36 @@
+.title {
+  color: #4C16A4;
+  font-weight: 700;
+  font-size: larger;
+}
+
+.input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  background: #161616;
+  margin: 10px 0;
+}
+
+.input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: calc(-100vmax - 10px) 0 0 100vmax #4C16A4;
+  clip-path: polygon(100% 0,
+      0 0,
+      0 18px,
+      -100vmax 18px,
+      -100vmax 7px,
+      0 7px,
+      0px 100%,
+      100% 100%);
+  margin-top: -5px;
+  width: 10px;
+  height: 20px;
+  background-color: #4C16A4;
+}
+
+.input::-webkit-slider-thumb:hover {
+  background-color: antiquewhite;
+  transform: scale(111%);
+}

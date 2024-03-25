@@ -1,0 +1,37 @@
+.menu {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.menu button {
+  width: fit-content;
+  border: none;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 600;
+  user-select: none;
+  background-color: #4C16A4;
+  color: white;
+  padding: 10px 20px;
+  transition: all 75ms;
+}
+
+.menu button:hover {
+  transform: scale(111%);
+}
+
+.menu button:active {
+  transform: scale(99%);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: 400px;
+  height: 100vh;
+  background-color: #0e0e0ea4;
+  transition: right 0.3s ease;
+  padding: 10px;
+}
