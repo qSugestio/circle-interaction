@@ -39,7 +39,9 @@ export default class Circle {
   public update(
     canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D,
+    mousePos: { x: number; y: number },
     isAttraction: number,
+    isAttractionToCursor: boolean,
     isDrawConnectingLines: boolean,
     isCollision: boolean,
     gravity: number
@@ -67,8 +69,31 @@ export default class Circle {
     this._x += this._velocity.x
     this._y += this._velocity.y
 
-    if (isDrawConnectingLines || isCollision || isAttraction) {
+    if (
+      isDrawConnectingLines ||
+      isCollision ||
+      isAttraction ||
+      isAttractionToCursor
+    ) {
       for (let circle of Circle.allCircles) {
+        if (isAttractionToCursor) {
+          const distance = this.getDistance(
+            this._x,
+            this._y,
+            mousePos.x,
+            mousePos.y
+          )
+          // console.log(mousePos.y)
+          const force = ((distance - this._radius) / distance) * isAttraction
+
+          const angle = Math.atan2(mousePos.y - this._y, mousePos.x - this._x)
+          const accelerationX = (Math.cos(angle) * force) / this._mass // mass factor?
+          const accelerationY = (Math.sin(angle) * force) / this._mass // mass factor?
+
+          this._velocity.x += accelerationX
+          this._velocity.y += accelerationY
+        }
+
         if (circle !== this) {
           const distance = this.getDistance(
             this._x,
@@ -81,8 +106,8 @@ export default class Circle {
             const force = ((distance - this._radius) / distance) * isAttraction
 
             const angle = Math.atan2(circle._y - this._y, circle._x - this._x)
-            const accelerationX = (Math.cos(angle) * force) / this._mass
-            const accelerationY = (Math.sin(angle) * force) / this._mass
+            const accelerationX = (Math.cos(angle) * force) / this._mass // mass factor?
+            const accelerationY = (Math.sin(angle) * force) / this._mass // mass factor?
 
             this._velocity.x += accelerationX
             this._velocity.y += accelerationY

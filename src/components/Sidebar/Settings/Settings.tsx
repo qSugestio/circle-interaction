@@ -84,6 +84,16 @@ const Settings: React.FC = () => {
         text='Очистить холст шаров'
         initialState={false}
       />
+      <Button
+        onClick={() =>
+          setSettings({
+            ...settings,
+            isAttractionToCursor: !settings.isAttractionToCursor,
+          })
+        }
+        text='Притяжение к курсору'
+        initialState={false}
+      />
     </div>
   )
 }

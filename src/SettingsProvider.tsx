@@ -10,6 +10,7 @@ interface SettingsContextType {
   isDrawConnectingLines: boolean
   isCollision: boolean
   isSpawn: boolean
+  isAttractionToCursor: boolean
   color: string
 }
 
@@ -23,6 +24,7 @@ const initialState: SettingsContextType = {
   isDrawConnectingLines: false,
   isCollision: true,
   isSpawn: true,
+  isAttractionToCursor: false,
   color: 'rgba(250, 10, 30, 0.9)',
 }
 

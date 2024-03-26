@@ -8,29 +8,9 @@ const Canvas: React.FC = () => {
 
   const [width, setWidth] = useState<number>(window.innerWidth)
   const [height, setHeight] = useState<number>(window.innerHeight)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
   const { settings } = useAppContext()
-
-  let animationFrameId: number
-  const animate = () => {
-    const canvas = canvasRef.current
-    const ctx = ctxRef.current
-    if (!canvas || !ctx) return
-
-    animationFrameId = window.requestAnimationFrame(animate)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    Circle.allCircles.forEach(circle => {
-      circle.update(
-        canvas,
-        ctx,
-        settings.isAttraction,
-        settings.isDrawConnectingLines,
-        settings.isCollision,
-        settings.gravity
-      )
-      circle.draw(ctx)
-    })
-  }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -40,15 +20,42 @@ const Canvas: React.FC = () => {
     if (!ctx) return
     ctxRef.current = ctx
 
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      Circle.allCircles.forEach(circle => circle.draw(ctx))
+    let animationFrameId: number
+
+    const animate = () => {
+      animationFrameId = window.requestAnimationFrame(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        Circle.allCircles.forEach(circle => {
+          circle.update(
+            canvas,
+            ctx,
+            mousePos,
+            settings.isAttraction,
+            settings.isAttractionToCursor,
+            settings.isDrawConnectingLines,
+            settings.isCollision,
+            settings.gravity
+          )
+          circle.draw(ctx)
+        })
+
+        animate()
+      })
     }
-    render()
 
     animate()
-    return () => window.cancelAnimationFrame(animationFrameId)
-  }, [settings])
+
+    const handleMouseMove = (event: MouseEvent) => {
+      setMousePos({ x: event.clientX, y: event.clientY })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId)
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [settings, mousePos])
 
   useEffect(() => {
     const handleResize = () => {
@@ -72,6 +79,12 @@ const Canvas: React.FC = () => {
       )
     }
   }
+
+  useEffect(() => {
+    window.addEventListener('mousemove', event =>
+      setMousePos({ x: event.clientX, y: event.clientY })
+    )
+  }, [])
 
   return (
     <canvas
