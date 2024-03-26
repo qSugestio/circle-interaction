@@ -92,7 +92,17 @@ const Settings: React.FC = () => {
           })
         }
         text='Притяжение к курсору'
-        initialState={false}
+        initialState={settings.isAttractionToCursor}
+      />
+      <Button
+        onClick={() =>
+          setSettings({
+            ...settings,
+            isTail: !settings.isTail,
+          })
+        }
+        text='хвост'
+        initialState={settings.isTail}
       />
     </div>
   )

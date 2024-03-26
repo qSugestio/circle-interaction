@@ -7,10 +7,11 @@ interface SettingsContextType {
   massFactor: number
   gravity: number
   isAttraction: number
+  isAttractionToCursor: boolean
   isDrawConnectingLines: boolean
   isCollision: boolean
   isSpawn: boolean
-  isAttractionToCursor: boolean
+  isTail: boolean
   color: string
 }
 
@@ -21,10 +22,11 @@ const initialState: SettingsContextType = {
   massFactor: 0.05,
   gravity: 0.5,
   isAttraction: 0,
+  isAttractionToCursor: false,
   isDrawConnectingLines: false,
   isCollision: true,
   isSpawn: true,
-  isAttractionToCursor: false,
+  isTail: false,
   color: 'rgba(250, 10, 30, 0.9)',
 }
 

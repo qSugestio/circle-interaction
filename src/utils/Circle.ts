@@ -6,6 +6,7 @@ export default class Circle {
   private _mass: number
   private _color: string
   private _velocity: { x: number; y: number }
+  private _trails: { x: number; y: number; opacity: number }[] = []
 
   constructor(
     x: number,
@@ -28,12 +29,26 @@ export default class Circle {
     Circle.allCircles = []
   }
 
-  public draw(ctx: CanvasRenderingContext2D) {
+  public draw(ctx: CanvasRenderingContext2D, isTail: boolean) {
     ctx.beginPath()
     ctx.arc(this._x, this._y, this._radius, 0, Math.PI * 2)
     ctx.fillStyle = this._color
     ctx.fill()
     ctx.closePath()
+
+    if (isTail) {
+      // Отрисовка следа
+      for (let i = 0; i < this._trails.length; i++) {
+        const trail = this._trails[i]
+        ctx.globalAlpha = trail.opacity // Устанавливаем прозрачность
+        ctx.beginPath()
+        ctx.arc(trail.x, trail.y, this._radius * 0.5, 0, Math.PI * 2)
+        ctx.fillStyle = this._color
+        ctx.fill()
+        ctx.closePath()
+      }
+      ctx.globalAlpha = 1 // Сбрасываем прозрачность
+    }
   }
 
   public update(
@@ -44,8 +59,20 @@ export default class Circle {
     isAttractionToCursor: boolean,
     isDrawConnectingLines: boolean,
     isCollision: boolean,
+    isTail: boolean,
     gravity: number
   ) {
+    if (isTail) {
+      // Обновление и удаление координат следа
+      this._trails.push({ x: this._x, y: this._y, opacity: 1.0 }) // Добавляем новую координату с полной прозрачностью
+      for (let i = 0; i < this._trails.length; i++) {
+        this._trails[i].opacity -= 0.01 // Уменьшаем прозрачность у всех координат следа
+      }
+      if (this._trails.length > 20) {
+        this._trails.shift() // Удаляем старую координату следа
+      }
+    }
+
     if (this._x + this._radius > canvas.width) {
       this._x = canvas.width - this._radius // Коррекция положения шара
       this._velocity.x = -this._velocity.x * 0.8 // Уменьшение скорости
@@ -83,7 +110,6 @@ export default class Circle {
             mousePos.x,
             mousePos.y
           )
-          // console.log(mousePos.y)
           const force = ((distance - this._radius) / distance) * isAttraction
 
           const angle = Math.atan2(mousePos.y - this._y, mousePos.x - this._x)

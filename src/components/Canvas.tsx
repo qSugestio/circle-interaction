@@ -34,9 +34,10 @@ const Canvas: React.FC = () => {
             settings.isAttractionToCursor,
             settings.isDrawConnectingLines,
             settings.isCollision,
+            settings.isTail,
             settings.gravity
           )
-          circle.draw(ctx)
+          circle.draw(ctx, settings.isTail)
         })
 
         animate()
