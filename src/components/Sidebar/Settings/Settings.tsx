@@ -1,11 +1,11 @@
 import React from 'react'
-import { useAppContext, useCirclesContext } from '../../../AppProvider'
+import { useAppContext } from '../../../AppProvider'
+import Circle from '../../../utils/Circle'
 import Button from './Button/Button'
 import Input from './Input/Input'
 
 const Settings: React.FC = () => {
   const { settings, setSettings } = useAppContext()
-  const { setCircles } = useCirclesContext()
 
   return (
     <div>
@@ -14,27 +14,43 @@ const Settings: React.FC = () => {
         initialState={settings.radius}
         min={10}
         max={100}
-        onChange={(value: number) => {
+        onChange={(value: number) =>
           setSettings({ ...settings, radius: value })
-        }}
+        }
       />
       <Input
         text='Гравитация'
         initialState={settings.gravity}
         min={-5}
         max={5}
-        onChange={(value: number) => {
+        onChange={(value: number) =>
           setSettings({ ...settings, gravity: value })
-        }}
+        }
       />
       <Input
         text='Притяжение'
         initialState={0}
         min={-5}
         max={5}
-        onChange={(value: number) => {
-          console.log('упс, пока не работает')
-        }}
+        onChange={(value: number) => console.log('упс, пока не работает')}
+      />
+      <Input
+        text='X Скорость'
+        initialState={settings.velocityX}
+        min={-20}
+        max={20}
+        onChange={(value: number) =>
+          setSettings({ ...settings, velocityX: value })
+        }
+      />
+      <Input
+        text='Y Скорость'
+        initialState={settings.velocityY}
+        min={-20}
+        max={20}
+        onChange={(value: number) =>
+          setSettings({ ...settings, velocityY: value })
+        }
       />
 
       <Button
@@ -61,7 +77,7 @@ const Settings: React.FC = () => {
         initialState={settings.isSpawn}
       />
       <Button
-        onClick={() => setCircles([])}
+        onClick={() => Circle.removeAllCircles()}
         text='Очистить холст шаров'
         initialState={false}
       />

@@ -1,23 +1,24 @@
 import styles from './Info.module.css'
 
 import React from 'react'
-import { useCirclesContext } from '../../../AppProvider'
+import Circle from '../../../utils/Circle'
 
 const Info = () => {
-  const { circles } = useCirclesContext()
-
-  return circles.length ? (
-    circles.map((circle, index) => (
-      <ul className={styles.circleInfo} key={index}>
-        <li>ID: {++index}</li>
-        <li>X Position: {circle.x.toFixed(2)}</li>
-        <li>Y Position: {circle.y.toFixed(2)}</li>
-        <li>Radius: {circle.radius}</li>
-        <li>Mass: {circle.mass}</li>
-        <li>velocityX: {circle.velocity.x.toFixed(2)}</li>
-        <li>velocityY: {circle.velocity.y.toFixed(2)}</li>
-      </ul>
-    ))
+  return Circle.allCircles.length ? (
+    Circle.allCircles.map((circle, index) => {
+      const { x, y, mass, radius, velocityX, velocityY } = circle.getInfo()
+      return (
+        <ul className={styles.circleInfo} key={index}>
+          <li>ID: {++index}</li>
+          <li>X Position: {x.toFixed(2)}</li>
+          <li>Y Position: {y.toFixed(2)}</li>
+          <li>Mass: {mass.toFixed(2)}</li>
+          <li>Radius: {radius}</li>
+          <li>velocityX: {velocityX.toFixed(2)}</li>
+          <li>velocityY: {velocityY.toFixed(2)}</li>
+        </ul>
+      )
+    })
   ) : (
     <div>Шары отсутсвуют</div>
   )

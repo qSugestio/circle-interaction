@@ -32,48 +32,18 @@ const SettingsContext = createContext<{
   setSettings: () => null,
 })
 
-interface CirlcesContextType extends SettingsContextType {
-  velocity: { x: number; y: number }
-  y: number
-  x: number
-  mass: number
-  update(
-    canvas: HTMLCanvasElement,
-    circles: SettingsContextType[],
-    ctx: CanvasRenderingContext2D,
-    isDrawConnectingLines: boolean,
-    isCollision: boolean,
-    gravity: number
-  ): unknown
-  draw(ctx: CanvasRenderingContext2D): void
-}
-
-const CirclesContext = createContext<{
-  circles: CirlcesContextType[]
-  setCircles: React.Dispatch<any>
-}>({
-  circles: [],
-  setCircles: () => null,
-})
-
 export const OptionProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [settings, setSettings] = useState<SettingsContextType>(initialState)
-  const [circles, setCircles] = useState<CirlcesContextType[]>([])
 
   return (
-    <CirclesContext.Provider value={{ circles, setCircles }}>
-      <SettingsContext.Provider value={{ settings, setSettings }}>
-        {children}
-      </SettingsContext.Provider>
-    </CirclesContext.Provider>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
+      {children}
+    </SettingsContext.Provider>
   )
 }
 
 export const useAppContext = () => {
   return useContext(SettingsContext)
-}
-export const useCirclesContext = () => {
-  return useContext(CirclesContext)
 }
