@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAppContext } from '../../../SettingsProvider'
+import { initialState, useAppContext } from '../../../SettingsProvider'
 import Circle from '../../../utils/Circle'
 import Button from '../Settings/Button/Button'
 
@@ -12,7 +12,7 @@ const Templates = () => {
         initialState={false}
         onClick={() => {
           setSettings({
-            ...settings,
+            ...initialState,
             isTail: true,
             isAttraction: -1,
             gravity: 0,
@@ -30,7 +30,7 @@ const Templates = () => {
         initialState={false}
         onClick={() => {
           setSettings({
-            ...settings,
+            ...initialState,
             isTail: true,
             isAttraction: 1,
             gravity: 0,

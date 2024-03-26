@@ -15,7 +15,7 @@ interface SettingsContextType {
   color: string
 }
 
-const initialState: SettingsContextType = {
+export const initialState: SettingsContextType = {
   velocityX: 15,
   velocityY: 15,
   radius: 15,
