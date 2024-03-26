@@ -6,6 +6,7 @@ interface SettingsContextType {
   radius: number
   massFactor: number
   gravity: number
+  isAttraction: number
   isDrawConnectingLines: boolean
   isCollision: boolean
   isSpawn: boolean
@@ -18,6 +19,7 @@ const initialState: SettingsContextType = {
   radius: 15,
   massFactor: 0.05,
   gravity: 0.5,
+  isAttraction: 0,
   isDrawConnectingLines: false,
   isCollision: true,
   isSpawn: true,
@@ -26,13 +28,13 @@ const initialState: SettingsContextType = {
 
 const SettingsContext = createContext<{
   settings: SettingsContextType
-  setSettings: React.Dispatch<any>
+  setSettings: React.Dispatch<SettingsContextType>
 }>({
   settings: initialState,
   setSettings: () => null,
 })
 
-export const OptionProvider: React.FC<{ children: React.ReactNode }> = ({
+export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [settings, setSettings] = useState<SettingsContextType>(initialState)

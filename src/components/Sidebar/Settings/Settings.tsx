@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAppContext } from '../../../AppProvider'
+import { useAppContext } from '../../../SettingsProvider'
 import Circle from '../../../utils/Circle'
 import Button from './Button/Button'
 import Input from './Input/Input'
@@ -29,10 +29,13 @@ const Settings: React.FC = () => {
       />
       <Input
         text='Притяжение'
-        initialState={0}
-        min={-5}
-        max={5}
-        onChange={(value: number) => console.log('упс, пока не работает')}
+        initialState={settings.isAttraction}
+        min={-1}
+        max={1}
+        step={0.05}
+        onChange={(value: number) =>
+          setSettings({ ...settings, isAttraction: value })
+        }
       />
       <Input
         text='X Скорость'

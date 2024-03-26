@@ -18,7 +18,7 @@ export default class Circle {
     this._x = x
     this._y = y
     this._radius = radius
-    this._mass = radius * 0.05
+    this._mass = radius * 0.005
     this._color = color
     this._velocity = { x: velocityX, y: velocityY }
     Circle.allCircles.push(this)
@@ -39,29 +39,35 @@ export default class Circle {
   public update(
     canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D,
+    isAttraction: number,
     isDrawConnectingLines: boolean,
     isCollision: boolean,
     gravity: number
   ) {
-    if (this._x + this._radius > canvas.width || this._x - this._radius < 0) {
-      this._velocity.x = -this._velocity.x
+    if (this._x + this._radius > canvas.width) {
+      this._x = canvas.width - this._radius // Коррекция положения шара
+      this._velocity.x = -this._velocity.x * 0.8 // Уменьшение скорости
+    } else if (this._x - this._radius < 0) {
+      this._x = this._radius
+      this._velocity.x = -this._velocity.x * 0.8
     }
 
-    if (this._y + this._radius > canvas.height || this._y - this._radius < 0) {
-      this._y = canvas.height - this._radius
+    if (this._y + this._radius > canvas.height) {
+      this._y = canvas.height - this._radius // Коррекция положения шара
+      this._velocity.y = -this._velocity.y * 0.8 // Уменьшение скорости
+    } else if (this._y - this._radius < 0) {
+      this._y = this._radius
       this._velocity.y = -this._velocity.y * 0.8
-      this._velocity.x *= 0.99
+    }
 
-      if (Math.abs(this._velocity.y) < 1.705) this._velocity.y = 0
-      if (Math.abs(this._velocity.x) < 0.3) this._velocity.x = 0
-    } else {
+    if (this._y + this._radius < canvas.height || this._y - this._radius > 0) {
       this._velocity.y += gravity
     }
 
     this._x += this._velocity.x
     this._y += this._velocity.y
 
-    if (isDrawConnectingLines || isCollision) {
+    if (isDrawConnectingLines || isCollision || isAttraction) {
       for (let circle of Circle.allCircles) {
         if (circle !== this) {
           const distance = this.getDistance(
@@ -70,13 +76,17 @@ export default class Circle {
             circle._x,
             circle._y
           )
-          // притяжение тел
-          // let force = ((distance - this.radius) / distance) * 1
-          // if (true) {
-          //   distance < this.radius
-          //     ? (force = (distance - this.radius) * 1)
-          //     : (force = 2)
-          // }
+
+          if (isAttraction) {
+            const force = ((distance - this._radius) / distance) * isAttraction
+
+            const angle = Math.atan2(circle._y - this._y, circle._x - this._x)
+            const accelerationX = (Math.cos(angle) * force) / this._mass
+            const accelerationY = (Math.sin(angle) * force) / this._mass
+
+            this._velocity.x += accelerationX
+            this._velocity.y += accelerationY
+          }
 
           if (isDrawConnectingLines)
             this.isDrawConnectingLines(distance, ctx, circle)
@@ -89,8 +99,8 @@ export default class Circle {
               const velocityX = targetX - circle._x
               const velocityY = targetY - circle._y
 
-              this._velocity.x += velocityX * 0.05 //* force
-              this._velocity.y += velocityY * 0.05 //* force
+              this._velocity.x += velocityX * 0.05
+              this._velocity.y += velocityY * 0.05
             }
           }
         }

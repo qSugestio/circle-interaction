@@ -7,7 +7,8 @@ const Input: React.FC<{
   initialState: number
   min: number
   max: number
-}> = ({ onChange, text, initialState, min, max }) => {
+  step?: number
+}> = ({ onChange, text, initialState, min, max, step }) => {
   const [value, setValue] = useState(initialState)
 
   return (
@@ -22,7 +23,7 @@ const Input: React.FC<{
         min={min}
         max={max}
         value={value}
-        step={0.5}
+        step={step || 0.5}
         onChange={event => {
           setValue(+event.target.value)
           onChange(+event.target.value)

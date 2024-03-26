@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useAppContext } from '../AppProvider'
+import { useAppContext } from '../SettingsProvider'
 import Circle from '../utils/Circle'
 
 const Canvas: React.FC = () => {
@@ -23,6 +23,7 @@ const Canvas: React.FC = () => {
       circle.update(
         canvas,
         ctx,
+        settings.isAttraction,
         settings.isDrawConnectingLines,
         settings.isCollision,
         settings.gravity
