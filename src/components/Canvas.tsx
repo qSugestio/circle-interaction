@@ -30,6 +30,7 @@ const Canvas: React.FC = () => {
             canvas,
             ctx,
             mousePos,
+            settings.massFactor,
             settings.isAttraction,
             settings.isAttractionToCursor,
             settings.isDrawConnectingLines,

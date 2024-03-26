@@ -55,6 +55,7 @@ export default class Circle {
     canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D,
     mousePos: { x: number; y: number },
+    massFactor: number,
     isAttraction: number,
     isAttractionToCursor: boolean,
     isDrawConnectingLines: boolean,
@@ -113,8 +114,10 @@ export default class Circle {
           const force = ((distance - this._radius) / distance) * isAttraction
 
           const angle = Math.atan2(mousePos.y - this._y, mousePos.x - this._x)
-          const accelerationX = (Math.cos(angle) * force) / this._mass // mass factor?
-          const accelerationY = (Math.sin(angle) * force) / this._mass // mass factor?
+          const accelerationX =
+            ((Math.cos(angle) * force) / this._mass) * massFactor // mass factor?
+          const accelerationY =
+            ((Math.sin(angle) * force) / this._mass) * massFactor // mass factor?
 
           this._velocity.x += accelerationX
           this._velocity.y += accelerationY
@@ -132,8 +135,10 @@ export default class Circle {
             const force = ((distance - this._radius) / distance) * isAttraction
 
             const angle = Math.atan2(circle._y - this._y, circle._x - this._x)
-            const accelerationX = (Math.cos(angle) * force) / this._mass // mass factor?
-            const accelerationY = (Math.sin(angle) * force) / this._mass // mass factor?
+            const accelerationX =
+              ((Math.cos(angle) * force) / this._mass) * massFactor // mass factor?
+            const accelerationY =
+              ((Math.sin(angle) * force) / this._mass) * massFactor // mass factor?
 
             this._velocity.x += accelerationX
             this._velocity.y += accelerationY

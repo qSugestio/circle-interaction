@@ -55,6 +55,16 @@ const Settings: React.FC = () => {
           setSettings({ ...settings, velocityY: value })
         }
       />
+      <Input
+        text='Коэффициент массы'
+        initialState={settings.massFactor}
+        min={0.05}
+        max={1}
+        step={0.05}
+        onChange={(value: number) =>
+          setSettings({ ...settings, massFactor: value })
+        }
+      />
 
       <Button
         onClick={() =>
